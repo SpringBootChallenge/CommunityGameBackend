@@ -24,9 +24,10 @@ public class CSVReader {
     @Autowired
     private ResourceLoader resourceLoader;
     private static final String CLASSPATH_URL = "classpath:";
+    private static final String DEFAULT_FILE_URL = "data/games.csv";
     private final Logger logger = LoggerFactory.getLogger(CSVReader.class);
 
-    public Iterable<CSVRecord> loadCsvFromClassPath(String url) {
+    private Iterable<CSVRecord> loadCsvFromClassPath(String url) {
         Resource fileToLoad = resourceLoader.getResource(CLASSPATH_URL + url);
         CSVFormat csvFormat = CSVFormat.DEFAULT
                 .builder()
@@ -44,7 +45,7 @@ public class CSVReader {
         return new ArrayList<>();
     }
 
-    public List<Game> csvRowsToGames(Iterable<CSVRecord> csvRecords) {
+    private List<Game> csvRowsToGames(Iterable<CSVRecord> csvRecords) {
         List<Game> games = new ArrayList<>();
         for (CSVRecord csvRecord : csvRecords) {
             Game newGame = new Game();
@@ -55,14 +56,15 @@ public class CSVReader {
             if (releaseDateTxt != null) {
                 newGame.setReleaseDate(LocalDate.parse(releaseDateTxt));
             }
-            newGame.setDescription(csvRecord.get("Genre"));
+            newGame.setGenre(csvRecord.get("Genre"));
             newGame.setPlatform(csvRecord.get("Platform"));
+            games.add(newGame);
         }
         return games;
     }
 
     public List<Game> loadGamesFromCsv() {
-        Iterable<CSVRecord> csvRecords = loadCsvFromClassPath("data/games.csv");
+        Iterable<CSVRecord> csvRecords = loadCsvFromClassPath(DEFAULT_FILE_URL);
         return csvRowsToGames(csvRecords);
     }
 
