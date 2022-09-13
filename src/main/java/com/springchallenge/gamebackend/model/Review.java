@@ -1,5 +1,6 @@
 package com.springchallenge.gamebackend.model;
 
+import com.springchallenge.gamebackend.dto.ReviewDto;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -31,6 +32,12 @@ public class Review {
     public Review(){
         this.id = UUID.randomUUID().toString();
         this.timeStamp = LocalDateTime.now();
+    }
+
+
+
+    public Review (ReviewDto reviewDto){
+        this();
     }
 
 }

@@ -33,4 +33,6 @@ public class User {
         this.id = UUID.randomUUID().toString();
         this.creationDate = LocalDateTime.now();
     }
+
+
 }
