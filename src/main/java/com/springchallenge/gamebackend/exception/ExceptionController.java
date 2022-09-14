@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.springchallenge.gamebackend.exception.customexceptions.DuplicateEntityException;
 import com.springchallenge.gamebackend.exception.customexceptions.InvalidCredentialsException;
@@ -19,8 +18,6 @@ import com.springchallenge.gamebackend.exception.customexceptions.ObjectNotFound
 @RestController
 @ControllerAdvice
 public class ExceptionController {
-
-    private final Logger logger = LoggerFactory.getLogger(ExceptionController.class);
 
     @ExceptionHandler(ObjectNotFoundException.class)
     public ResponseEntity<ExceptionResponse> handleNotFoundExceptions(ObjectNotFoundException exception,
@@ -57,7 +54,6 @@ public class ExceptionController {
     @ExceptionHandler(InvalidFileException.class)
     public ResponseEntity<ExceptionResponse> handleInvalidFileException(InvalidFileException exception,
             WebRequest request) {
-        logger.error("The read operation in the file was interrupted", exception);
         ExceptionResponse response = new ExceptionResponse();
         response.setMessage(exception.getMessage());
         return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);

@@ -27,6 +27,7 @@ public class CSVReader {
     private ResourceLoader resourceLoader;
     private static final String CLASSPATH_URL = "classpath:";
     private static final String DEFAULT_FILE_URL = "data/games.csv";
+    private final Logger logger = LoggerFactory.getLogger(CSVReader.class);
 
     private Iterable<CSVRecord> loadCsvFromClassPath(String url) {
         Resource fileToLoad = resourceLoader.getResource(CLASSPATH_URL + url);
@@ -41,6 +42,7 @@ public class CSVReader {
             return parser.getRecords();
 
         } catch (IOException e) {
+            logger.error("The read operation in the file was interrupted", e);
             throw ExceptionsGenerator.getException(ExceptionType.INVALID_FILE,
                     "The read operation on the file could not be completed.");
         }
