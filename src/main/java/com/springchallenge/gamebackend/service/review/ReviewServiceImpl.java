@@ -42,7 +42,8 @@ public class ReviewServiceImpl implements ReviewService {
             ReviewDtoOutput reviewDtoOutput = mapper.map(review, ReviewDtoOutput.class);
             return reviewDtoOutput;
         }else{
-            throw ExceptionsGenerator.getException(ExceptionType.DUPLICATE_ENTITY, "Review already created");
+            throw ExceptionsGenerator.getException(ExceptionType.DUPLICATE_ENTITY,
+                    "Review already created");
         }
     }
 }

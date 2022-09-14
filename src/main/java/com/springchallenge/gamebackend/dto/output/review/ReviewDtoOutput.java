@@ -1,6 +1,7 @@
 package com.springchallenge.gamebackend.dto.output.review;
 
 
+import com.springchallenge.gamebackend.dto.output.game.GameDtoOutput;
 import lombok.Data;
 import java.time.LocalDateTime;
 import com.springchallenge.gamebackend.dto.output.game.GameDto;
@@ -12,6 +13,6 @@ public class ReviewDtoOutput {
     private int score;
     private String text;
     private LocalDateTime timeStamp;
-    private GameDto game;
+    private GameDtoOutput game;
     private UserDto user;
 }
