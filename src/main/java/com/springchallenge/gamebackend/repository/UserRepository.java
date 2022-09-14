@@ -1,4 +1,4 @@
-package com.springchallenge.gamebackend.repositories;
+package com.springchallenge.gamebackend.repository;
 
 import com.springchallenge.gamebackend.model.User;
 import org.springframework.data.repository.PagingAndSortingRepository;

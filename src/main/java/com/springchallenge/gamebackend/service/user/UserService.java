@@ -1,4 +1,4 @@
-package com.springchallenge.gamebackend.services.UserService;
+package com.springchallenge.gamebackend.service.user;
 
 import com.springchallenge.gamebackend.model.User;
 

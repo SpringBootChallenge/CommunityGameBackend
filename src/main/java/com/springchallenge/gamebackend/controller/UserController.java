@@ -1,9 +1,9 @@
-package com.springchallenge.gamebackend.controllers;
+package com.springchallenge.gamebackend.controller;
 
 import com.springchallenge.gamebackend.dto.input.user.UserDto;
 import com.springchallenge.gamebackend.dto.output.user.UserDtoSignUp;
 import com.springchallenge.gamebackend.model.User;
-import com.springchallenge.gamebackend.services.UserService.UserService;
+import com.springchallenge.gamebackend.service.user.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
