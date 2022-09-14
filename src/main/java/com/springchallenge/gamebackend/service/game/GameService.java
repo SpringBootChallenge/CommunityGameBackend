@@ -6,7 +6,7 @@ import com.springchallenge.gamebackend.model.Game;
 
 public interface GameService {
 
-    public Boolean loadGamesFromCSV();
+    public void loadGamesFromCSV();
 
-    public Boolean saveGames(List<Game> games);
+    public void saveGames(List<Game> games);
 }
