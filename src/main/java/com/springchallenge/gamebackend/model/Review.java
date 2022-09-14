@@ -1,11 +1,13 @@
 package com.springchallenge.gamebackend.model;
 
-import com.springchallenge.gamebackend.dto.ReviewDto;
+
 import lombok.Data;
 
+import java.util.UUID;
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.UUID;
+
+import com.springchallenge.gamebackend.dto.input.review.ReviewDto;
 
 @Entity
 @Table(name="review")
@@ -34,10 +36,16 @@ public class Review {
         this.timeStamp = LocalDateTime.now();
     }
 
-
-
-    public Review (ReviewDto reviewDto){
+    public Review(String text, int score) {
         this();
+        this.text = text;
+        this.score = score;
+    }
+
+    public Review (ReviewDto reviewDto, User user, Game game){
+        this(reviewDto.getText(), reviewDto.getScore());
+        this.user = user;
+        this.game = game;
     }
 
 }

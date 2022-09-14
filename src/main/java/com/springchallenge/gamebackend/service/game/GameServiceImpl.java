@@ -2,16 +2,16 @@ package com.springchallenge.gamebackend.service.game;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.dao.DataAccessException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.springchallenge.gamebackend.exception.ExceptionType;
-import com.springchallenge.gamebackend.exception.ExceptionsGenerator;
 import com.springchallenge.gamebackend.model.Game;
-import com.springchallenge.gamebackend.repository.GameRepository;
 import com.springchallenge.gamebackend.util.CSVReader;
+import com.springchallenge.gamebackend.exception.ExceptionType;
+import com.springchallenge.gamebackend.repository.GameRepository;
+import com.springchallenge.gamebackend.exception.ExceptionsGenerator;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -36,6 +36,11 @@ public class GameServiceImpl implements GameService {
             throw ExceptionsGenerator.getException(ExceptionType.INVALID_OBJECT,
                     "The games could not be stored in the database.");
         }
+    }
+
+    @Override
+    public Game findById(String id) {
+        return gameRepo.findById(id).get();
     }
 
 }

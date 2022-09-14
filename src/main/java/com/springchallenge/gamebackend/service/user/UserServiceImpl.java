@@ -1,12 +1,12 @@
 package com.springchallenge.gamebackend.service.user;
 
-import com.springchallenge.gamebackend.exception.ExceptionType;
-import com.springchallenge.gamebackend.exception.ExceptionsGenerator;
-import com.springchallenge.gamebackend.model.User;
-import com.springchallenge.gamebackend.repository.UserRepository;
-import com.springchallenge.gamebackend.service.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.springchallenge.gamebackend.model.User;
+import com.springchallenge.gamebackend.exception.ExceptionType;
+import com.springchallenge.gamebackend.repository.UserRepository;
+import com.springchallenge.gamebackend.exception.ExceptionsGenerator;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,5 +24,10 @@ public class UserServiceImpl implements UserService {
         }else{
             throw ExceptionsGenerator.getException(ExceptionType.DUPLICATE_ENTITY, "Email or username in use.");
         }
+    }
+
+    @Override
+    public User findById(String id) {
+        return userRepository.findById(id).get();
     }
 }
