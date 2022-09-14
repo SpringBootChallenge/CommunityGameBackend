@@ -9,4 +9,6 @@ public interface GameService {
     public void loadGamesFromCSV();
 
     public void saveGames(List<Game> games);
+
+    public Game getGameById(String id);
 }

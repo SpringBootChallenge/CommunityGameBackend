@@ -1,6 +1,7 @@
 package com.springchallenge.gamebackend.service.game;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -36,6 +37,15 @@ public class GameServiceImpl implements GameService {
             throw ExceptionsGenerator.getException(ExceptionType.INVALID_OBJECT,
                     "The games could not be stored in the database.");
         }
+    }
+
+    @Override
+    public Game getGameById(String id) {
+        Optional<Game> game = gameRepo.findById(id);
+        if (game.isPresent()) {
+            return game.get();
+        }
+        throw ExceptionsGenerator.getException(ExceptionType.NOT_FOUND, "There is no game with the supplied id.");
     }
 
 }
