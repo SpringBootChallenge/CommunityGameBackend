@@ -18,7 +18,7 @@ public class User {
     @Column(name="email")
     private String email;
     @Column(name="user_name")
-    private String userName;
+    private String username;
     @Column(name="password")
     private String password;
     @Column(name="logged")
@@ -38,7 +38,7 @@ public class User {
     public User(String email, String userName, String password) {
         this();
         this.email = email;
-        this.userName = userName;
+        this.username = userName;
         this.password = password;
     }
 

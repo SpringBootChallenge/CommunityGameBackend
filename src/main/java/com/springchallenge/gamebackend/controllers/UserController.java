@@ -16,16 +16,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/health-check")
-    public ResponseEntity<String> healthCheck(){
-        return ResponseEntity.ok("OK");
-    }
-
     @PostMapping
     public ResponseEntity<UserDtoSignUp> createUser(@RequestBody UserDto userDto){
-        System.out.println("Create User");
         User user = new User(userDto);
-        System.out.println(user.getId());
         userService.createUser(user);
         ModelMapper modelMapper = new ModelMapper();
         UserDtoSignUp userDtoSignUp = modelMapper.map(user, UserDtoSignUp.class);
