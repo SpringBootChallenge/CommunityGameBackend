@@ -36,7 +36,7 @@ public class GameController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<GameDto>> getGames(@RequestParam Integer page,
+    public ResponseEntity<List<GameDto>> getGames(@RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer limit, @RequestParam(required = false) String sort,
             @RequestParam(required = false) String title, @RequestParam(required = false) String platform,
             @RequestParam(required = false) String genre) {
@@ -49,6 +49,7 @@ public class GameController {
         if (sort == null) {
             sort = "newest";
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
+        return new ResponseEntity<>(gameService.getFilteredGames(page, limit, sort, title, platform, genre),
+                HttpStatus.OK);
     }
 }

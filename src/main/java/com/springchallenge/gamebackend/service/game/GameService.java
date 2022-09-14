@@ -12,4 +12,7 @@ public interface GameService {
     public void saveGames(List<Game> games);
 
     public GameDto getGameById(String id);
+
+    public List<GameDto> getFilteredGames(int page, int limit, String sort, String title, String platform,
+            String genre);
 }
