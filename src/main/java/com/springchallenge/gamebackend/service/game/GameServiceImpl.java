@@ -4,17 +4,18 @@ import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
+
 import org.springframework.stereotype.Service;
+import org.springframework.dao.DataAccessException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.springchallenge.gamebackend.model.Game;
+import com.springchallenge.gamebackend.util.CSVReader;
 import com.springchallenge.gamebackend.dto.output.game.GameDto;
 import com.springchallenge.gamebackend.exception.ExceptionType;
-import com.springchallenge.gamebackend.exception.ExceptionsGenerator;
-import com.springchallenge.gamebackend.model.Game;
 import com.springchallenge.gamebackend.repository.GameRepository;
-import com.springchallenge.gamebackend.util.CSVReader;
+import com.springchallenge.gamebackend.exception.ExceptionsGenerator;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -42,6 +43,16 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public Game findById(String id) {
+        Optional<Game> game = gameRepo.findById(id);
+        if (game.isPresent()) {
+            return gameRepo.findById(id).get();
+        }
+        throw ExceptionsGenerator.getException(ExceptionType.NOT_FOUND,
+                "There is no game with the supplied id.");
+
+    }
+
     public GameDto getGameById(String id) {
         Optional<Game> game = gameRepo.findById(id);
         if (game.isPresent()) {
@@ -50,7 +61,8 @@ public class GameServiceImpl implements GameService {
             assignGameStatistics(foundGame);
             return foundGame;
         }
-        throw ExceptionsGenerator.getException(ExceptionType.NOT_FOUND, "There is no game with the supplied id.");
+        throw ExceptionsGenerator.getException(ExceptionType.NOT_FOUND,
+                "There is no game with the supplied id.");
     }
 
     private void assignGameStatistics(GameDto game) {

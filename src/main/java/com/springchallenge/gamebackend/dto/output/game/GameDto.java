@@ -26,3 +26,4 @@ public class GameDto {
     private int retiredCount;
     private UserDto updatedBy;
 }
+

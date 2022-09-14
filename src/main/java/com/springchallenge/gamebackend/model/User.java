@@ -45,4 +45,5 @@ public class User {
     public User(UserDto userDto){
         this(userDto.getEmail(), userDto.getUsername(), userDto.getPassword());
     }
+
 }
