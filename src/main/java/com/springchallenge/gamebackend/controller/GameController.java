@@ -21,7 +21,7 @@ public class GameController {
 
     @GetMapping("/{id}")
     public ResponseEntity<GameDto> getGame(@PathVariable String id) {
-        GameDto game = gameService.getGameById(id);
+        GameDto game = gameService.findGameDtoById(id);
         return new ResponseEntity<>(game, HttpStatus.OK);
     }
 
