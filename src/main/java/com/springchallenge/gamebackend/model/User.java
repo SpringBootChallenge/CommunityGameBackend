@@ -1,5 +1,6 @@
 package com.springchallenge.gamebackend.model;
 
+import com.springchallenge.gamebackend.dto.input.user.UserDto;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -17,7 +18,7 @@ public class User {
     @Column(name="email")
     private String email;
     @Column(name="user_name")
-    private String userName;
+    private String username;
     @Column(name="password")
     private String password;
     @Column(name="logged")
@@ -28,9 +29,20 @@ public class User {
     @OneToMany(mappedBy = "game")
     Set<GameState> games;
 
-
     public User (){
+        this.logged = false;
         this.id = UUID.randomUUID().toString();
         this.creationDate = LocalDateTime.now();
+    }
+
+    public User(String email, String userName, String password) {
+        this();
+        this.email = email;
+        this.username = userName;
+        this.password = password;
+    }
+
+    public User(UserDto userDto){
+        this(userDto.getEmail(), userDto.getUsername(), userDto.getPassword());
     }
 }

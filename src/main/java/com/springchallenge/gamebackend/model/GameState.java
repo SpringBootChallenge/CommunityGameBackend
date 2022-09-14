@@ -22,7 +22,6 @@ public class GameState {
     @JoinColumn(name = "user_id")
     private User user;
 
-
     @ManyToOne
     @JoinColumn(name="state", foreignKey = @ForeignKey(name="FK_GAME_STATE"))
     private State state;
