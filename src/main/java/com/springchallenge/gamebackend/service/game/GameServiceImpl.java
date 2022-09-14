@@ -47,9 +47,17 @@ public class GameServiceImpl implements GameService {
         if (game.isPresent()) {
             ModelMapper mapper = new ModelMapper();
             GameDto foundGame = mapper.map(game.get(), GameDto.class);
+            assignGameStatistics(foundGame);
             return foundGame;
         }
         throw ExceptionsGenerator.getException(ExceptionType.NOT_FOUND, "There is no game with the supplied id.");
+    }
+
+    private void assignGameStatistics(GameDto game) {
+        game.setBacklogCount(gameRepo.countByState("BACKLOG"));
+        game.setBeatCount(gameRepo.countByState("BEAT"));
+        game.setRetiredCount(gameRepo.countByState("RETIRED"));
+        game.setPlayingCount(gameRepo.countByState("PLAYING"));
     }
 
 }
