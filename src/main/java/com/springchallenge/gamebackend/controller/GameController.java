@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springchallenge.gamebackend.dto.input.game.GameFilterCriteria;
 import com.springchallenge.gamebackend.dto.output.game.GameDto;
 import com.springchallenge.gamebackend.service.game.GameService;
 
@@ -36,20 +37,11 @@ public class GameController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<GameDto>> getGames(@RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer limit, @RequestParam(required = false) String sort,
-            @RequestParam(required = false) String title, @RequestParam(required = false) String platform,
-            @RequestParam(required = false) String genre) {
-        if (page == null) {
-            page = 1;
-        }
-        if (limit == null) {
-            limit = 10;
-        }
-        if (sort == null) {
-            sort = "newest";
-        }
-        return new ResponseEntity<>(gameService.getFilteredGames(page, limit, sort, title, platform, genre),
+    public ResponseEntity<List<GameDto>> getGames(GameFilterCriteria filter) {
+        System.out.println(filter);
+        return new ResponseEntity<>(
+                gameService.getFilteredGames(filter.getPage(), filter.getLimit(), filter.getSort(), filter.getTitle(),
+                        filter.getPlatform(), filter.getGenre()),
                 HttpStatus.OK);
     }
 }
