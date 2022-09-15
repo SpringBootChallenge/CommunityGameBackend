@@ -9,4 +9,6 @@ public interface ReviewRepository extends PagingAndSortingRepository<Review, Str
     Review findByGameIdAndUserId(String gameId, String userId);
 
     Review findByUserIdAndId(String userId, String id);
+
+    void deleteById(String id);
 }
