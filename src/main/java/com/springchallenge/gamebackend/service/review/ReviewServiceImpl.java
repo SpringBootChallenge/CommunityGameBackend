@@ -61,12 +61,18 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ReviewDtoOutput updateReview(UpdateReviewDto updateReviewDto, String userId, String reviewId) {
-        if(reviewRepository.findByUserIdAndId(userId, reviewId) == null) throw ExceptionsGenerator.getException(ExceptionType.UNAUTHORIZED, "You can only update reviews for yourself");
+        if(reviewRepository.findByUserIdAndId(userId, reviewId) == null) throw ExceptionsGenerator.getException(ExceptionType.UNAUTHORIZED, "You can only update your own reviews");
         Review review = findById(reviewId);
         review.update(updateReviewDto);
         reviewRepository.save(review);
         ModelMapper mapper = new ModelMapper();
         ReviewDtoOutput reviewDtoOutput = mapper.map(review, ReviewDtoOutput.class);
         return reviewDtoOutput;
+    }
+
+    @Override
+    public void deleteReview(String userId, String reviewId) {
+        if(reviewRepository.findByUserIdAndId(userId, reviewId) == null) throw ExceptionsGenerator.getException(ExceptionType.UNAUTHORIZED, "You can only delete your own reviews");
+        reviewRepository.deleteById(reviewId);
     }
 }

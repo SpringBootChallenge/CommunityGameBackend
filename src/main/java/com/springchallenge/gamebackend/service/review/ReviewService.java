@@ -12,4 +12,6 @@ public interface ReviewService {
     ReviewDtoOutput createReview(ReviewDto reviewDto, String userIdHeader);
 
     ReviewDtoOutput updateReview(UpdateReviewDto updateReviewDto, String userId, String reviewId);
+
+    void deleteReview(String userId, String reviewId);
 }
