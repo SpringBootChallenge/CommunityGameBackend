@@ -1,11 +1,15 @@
 package com.springchallenge.gamebackend.service.user;
 
-import com.springchallenge.gamebackend.model.User;
+import java.util.Optional;
 
+import com.springchallenge.gamebackend.model.User;
 
 public interface UserService {
 
-    User createUser(User user);
+    public User createUser(User user);
 
-    User findById(String id);
+    public User findById(String id);
+
+    public Optional<User> findPossibleUserById(String id);
+
 }

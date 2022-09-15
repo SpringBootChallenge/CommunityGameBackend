@@ -1,6 +1,9 @@
 package com.springchallenge.gamebackend.service.user;
 
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.springchallenge.gamebackend.model.User;
@@ -28,6 +31,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(String id) {
-        return userRepository.findById(id).get();
+        Optional<User> possibleUser = findPossibleUserById(id);
+        if (possibleUser.isPresent()) {
+            return possibleUser.get();
+        }
+        throw ExceptionsGenerator.getException(ExceptionType.NOT_FOUND, "There is no user with the supplied id");
+    }
+
+    @Override
+    public Optional<User> findPossibleUserById(String id) {
+        return userRepository.findById(id);
     }
 }
