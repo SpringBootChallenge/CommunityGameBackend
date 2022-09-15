@@ -10,39 +10,39 @@ import com.springchallenge.gamebackend.model.Game;
 
 public interface GameRepository extends PagingAndSortingRepository<Game, String> {
 
-        public String FILTER_CONDITION = "where (?1 is null or g.platform=?1) and (?2 is null or g.genre=?2) and (?3 is null or upper(g.title) like concat('%',upper(?3),'%'))";
+        public String FILTER_CONDITION = "WHERE (?1 IS NULL OR g.platform=?1) AND (?2 IS NULL OR g.genre=?2) AND (?3 IS NULL OR UPPER(g.title) LIKE CONCAT('%',UPPER(?3),'%'))";
 
-        @Query(value = "SELECT count(g.id) FROM game as g "
-                        + "INNER JOIN game_state as gs ON g.id=gs.game_id "
-                        + "INNER JOIN state as s ON gs.state=s.id "
-                        + "WHERE g.id=?1 and s.description=?2", nativeQuery = true)
+        @Query(value = "SELECT COUNT(g.id) FROM game AS g "
+                        + "INNER JOIN game_state AS gs ON g.id=gs.game_id "
+                        + "INNER JOIN state AS s ON gs.state=s.id "
+                        + "WHERE g.id=?1 AND s.description=?2", nativeQuery = true)
         int countByState(String gameId, String state);
 
-        @Query(value = "SELECT * from game g "
+        @Query(value = "SELECT * FROM game g "
                         + FILTER_CONDITION
-                        + " order by g.update_at desc", countQuery = "SELECT count(g.id) from game g"
+                        + " ORDER BY g.update_at DESC", countQuery = "SELECT COUNT(g.id) FROM game g"
                                         + FILTER_CONDITION, nativeQuery = true)
         List<Game> findByFiltersOrderByUpdatedAt(String platform, String genre, String title,
                         Pageable pagination);
 
-        @Query(value = "select g.*, count(case s.description when ?4 then 1 else null end) as numPlayers from game g "
-                        + "left join game_state gs on g.id=gs.game_id "
-                        + "left join state s on gs.state=s.id "
+        @Query(value = "SELECT g.*, COUNT(CASE s.description WHEN ?4 THEN 1 ELSE NULL END) AS numPlayers FROM game g "
+                        + "LEFT JOIN game_state gs ON g.id=gs.game_id "
+                        + "LEFT JOIN state s ON gs.state=s.id "
                         + FILTER_CONDITION
-                        + " group by g.id order by numPlayers desc", countQuery = "select count(g.id) from game g "
-                                        + "left join game_state gs on g.id=gs.game_id "
-                                        + "left join state s on gs.state=s.id "
+                        + " GROUP BY g.id ORDER BY numPlayers DESC", countQuery = "SELECT COUNT(g.id) FROM game g "
+                                        + "LEFT JOIN game_state gs ON g.id=gs.game_id "
+                                        + "LEFT JOIN state s ON gs.state=s.id "
                                         + FILTER_CONDITION
-                                        + " group by g.id", nativeQuery = true)
+                                        + " GROUP BY g.id", nativeQuery = true)
         List<Game> findByFiltersOrderByPlayers(String platform, String genre, String title, String gameState,
                         Pageable pagination);
 
-        @Query(value = "select g.*, avg(r.score) as score from game g "
-                        + "left join review r on g.id=r.game_id "
+        @Query(value = "SELECT g.*, AVG(r.score) AS score FROM game g "
+                        + "LEFT JOIN review r ON g.id=r.game_id "
                         + FILTER_CONDITION
-                        + " group by g.id order by score desc", countQuery = "SELECT count(g.id) from game g "
-                                        + "left join review r on g.id=r.game_id "
-                                        + FILTER_CONDITION + " group by g.id", nativeQuery = true)
+                        + " GROUP BY g.id ORDER BY score DESC", countQuery = "SELECT COUNT(g.id) FROM game g "
+                                        + "LEFT JOIN review r ON g.id=r.game_id "
+                                        + FILTER_CONDITION + " GROUP BY g.id", nativeQuery = true)
         List<Game> findByFiltersOrderByScore(String platform, String genre, String title,
                         Pageable pagination);
 
