@@ -40,8 +40,7 @@ public class GameController {
     public ResponseEntity<List<GameDto>> getGames(GameFilterCriteria filter) {
         System.out.println(filter);
         return new ResponseEntity<>(
-                gameService.getFilteredGames(filter.getPage(), filter.getLimit(), filter.getSort(), filter.getTitle(),
-                        filter.getPlatform(), filter.getGenre()),
+                gameService.getFilteredGames(filter),
                 HttpStatus.OK);
     }
 }

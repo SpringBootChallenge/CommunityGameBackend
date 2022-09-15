@@ -1,5 +1,6 @@
 package com.springchallenge.gamebackend.service.game;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.springchallenge.gamebackend.dto.input.game.GameFilterCriteria;
 import com.springchallenge.gamebackend.dto.output.game.GameDto;
 import com.springchallenge.gamebackend.exception.ExceptionType;
 import com.springchallenge.gamebackend.exception.ExceptionsGenerator;
@@ -57,27 +58,35 @@ public class GameServiceImpl implements GameService {
     }
 
     private void assignGameStatistics(GameDto game) {
-        game.setBacklogCount(gameRepo.countByState("BACKLOG"));
-        game.setBeatCount(gameRepo.countByState("BEAT"));
-        game.setRetiredCount(gameRepo.countByState("RETIRED"));
-        game.setPlayingCount(gameRepo.countByState("PLAYING"));
+        game.setBacklogCount(gameRepo.countByState(game.getId(), "BACKLOG"));
+        game.setBeatCount(gameRepo.countByState(game.getId(), "BEAT"));
+        game.setRetiredCount(gameRepo.countByState(game.getId(), "RETIRED"));
+        game.setPlayingCount(gameRepo.countByState(game.getId(), "PLAYING"));
     }
 
-    public List<GameDto> getFilteredGames(int page, int limit, String sort, String title, String platform,
-            String genre) {
-        page = page - 1;
-        Pageable newestGamesPagination = PageRequest.of(page, limit, Sort.by("updateAt").descending());
-        System.out.printf("getFilteredGames page:%d, limit:%d, sort:%s, title:%s, platform:%s, genre:%s", page, limit,
-                sort, title, platform, genre);
+    public List<GameDto> getFilteredGames(GameFilterCriteria filter) {
+        String sort = filter.getSort();
+        List<Game> games = new ArrayList<>();
         ModelMapper mapper = new ModelMapper();
-        List<GameDto> newestGamesDtos = gameRepo
-                .findByPlatformOrGenreOrTitleLikeIgnoreCase(platform, genre, title, newestGamesPagination)
+        Pageable pagination = PageRequest.of(filter.getPage() - 1, filter.getLimit());
+        if (sort.equals("newest")) {
+            games = gameRepo.findByFiltersOrderByUpdatedAt(filter.getPlatform(), filter.getGenre(),
+                    filter.getTitle(), pagination);
+        } else if (sort.equals("score")) {
+            games = gameRepo.findByFiltersOrderByScore(filter.getPlatform(), filter.getGenre(),
+                    filter.getTitle(), pagination);
+        } else if (sort.equals("players")) {
+            games = gameRepo.findByFiltersOrderByPlayers(filter.getPlatform(), filter.getGenre(),
+                    filter.getTitle(), "PLAYING", pagination);
+        }
+        return games
                 .stream()
-                .map((Game game) -> {
-                    return mapper.map(game, GameDto.class);
+                .map(game -> {
+                    GameDto gameDto = mapper.map(game, GameDto.class);
+                    assignGameStatistics(gameDto);
+                    return gameDto;
                 })
                 .toList();
-        return newestGamesDtos;
     }
 
 }
