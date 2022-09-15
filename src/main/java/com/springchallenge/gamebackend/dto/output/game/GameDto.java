@@ -3,14 +3,11 @@ package com.springchallenge.gamebackend.dto.output.game;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.springchallenge.gamebackend.dto.output.user.UserDto;
 
 import lombok.Data;
 
 @Data
-@JsonInclude(Include.NON_NULL)
 public class GameDto {
     private String id;
     private String title;
@@ -26,4 +23,5 @@ public class GameDto {
     private int retiredCount;
     private UserDto updatedBy;
 }
+
 
