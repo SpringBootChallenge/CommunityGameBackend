@@ -29,8 +29,9 @@ public class ReviewServiceImpl implements ReviewService {
     private ReviewRepository reviewRepository;
 
     @Override
-    public ReviewDtoOutput createReview(ReviewDto reviewDto) {
+    public ReviewDtoOutput createReview(ReviewDto reviewDto, String userIdHeader) {
         String userId = reviewDto.getUserId();
+        if(!userId.equals(userIdHeader)) throw ExceptionsGenerator.getException(ExceptionType.UNAUTHORIZED, "You can only create reviews for yourself ");
         String gameId = reviewDto.getGameId();
         Boolean reviewCreated = reviewRepository.findByGameIdAndUserId(gameId, userId) != null;
         if(!reviewCreated){
@@ -41,9 +42,7 @@ public class ReviewServiceImpl implements ReviewService {
             ModelMapper mapper = new ModelMapper();
             ReviewDtoOutput reviewDtoOutput = mapper.map(review, ReviewDtoOutput.class);
             return reviewDtoOutput;
-        }else{
-            throw ExceptionsGenerator.getException(ExceptionType.DUPLICATE_ENTITY,
-                    "Review already created");
         }
+        throw ExceptionsGenerator.getException(ExceptionType.DUPLICATE_ENTITY, "Review already created");
     }
 }
