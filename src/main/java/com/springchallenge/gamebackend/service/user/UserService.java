@@ -14,4 +14,6 @@ public interface UserService {
     UserDtoSignUp loginUser(UserLoginDto userLoginDto);
 
     boolean isLogged(String userId);
+
+    void logoutUser(String userId);
 }
