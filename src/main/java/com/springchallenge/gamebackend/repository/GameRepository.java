@@ -25,15 +25,15 @@ public interface GameRepository extends PagingAndSortingRepository<Game, String>
         List<Game> findByFiltersOrderByUpdatedAt(String platform, String genre, String title,
                         Pageable pagination);
 
-        @Query(value = "select g.*, count(g.id) as numPlayers from game g "
-                        + "inner join game_state gs on g.id=gs.game_id "
-                        + "inner join state s on gs.state=s.id "
+        @Query(value = "select g.*, count(case s.description when ?4 then 1 else null end) as numPlayers from game g "
+                        + "left join game_state gs on g.id=gs.game_id "
+                        + "left join state s on gs.state=s.id "
                         + FILTER_CONDITION
-                        + " and s.description=?4 group by g.id order by numPlayers desc", countQuery = "select count(g.id) from game g "
-                                        + "inner join game_state gs on g.id=gs.game_id "
-                                        + "inner join state s on gs.state=s.id "
+                        + " group by g.id order by numPlayers desc", countQuery = "select count(g.id) from game g "
+                                        + "left join game_state gs on g.id=gs.game_id "
+                                        + "left join state s on gs.state=s.id "
                                         + FILTER_CONDITION
-                                        + " and s.description=?4", nativeQuery = true)
+                                        + " group by g.id", nativeQuery = true)
         List<Game> findByFiltersOrderByPlayers(String platform, String genre, String title, String gameState,
                         Pageable pagination);
 
