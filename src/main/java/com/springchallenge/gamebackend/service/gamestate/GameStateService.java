@@ -9,5 +9,7 @@ public interface GameStateService {
 
     public void setGameState(String userId, String gameId, GameStateDto state);
 
-    public Optional<GameState> findPossibleGameState(String gameId, String game);
+    public Optional<GameState> findPossibleGameState(String gameId, String userId);
+
+    public void removeGameState(String gameId, String userId);
 }

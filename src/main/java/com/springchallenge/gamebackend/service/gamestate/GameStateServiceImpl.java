@@ -61,4 +61,18 @@ public class GameStateServiceImpl implements GameStateService {
         return gameStateRepo.findById(new GameStateKey(gameId, userId));
     }
 
+    @Override
+    public void removeGameState(String gameId, String userId) {
+        Game game = gameService.findById(gameId);
+        if (game != null) {
+            Optional<GameState> possibleGameState = findPossibleGameState(gameId, userId);
+            if (possibleGameState.isPresent()) {
+                gameStateRepo.delete(possibleGameState.get());
+            } else {
+                throw ExceptionsGenerator.getException(ExceptionType.NOT_FOUND,
+                        "The current user is not related to the supplied game.");
+            }
+        }
+    }
+
 }
