@@ -16,12 +16,11 @@ import com.springchallenge.gamebackend.dto.output.user.UserDtoSignUp;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/users")
 public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/create")
+    @PostMapping("/signup")
     public ResponseEntity<UserDtoSignUp> createUser(@RequestBody @Valid UserDto userDto, BindingResult bindingResult){
         if(bindingResult.hasErrors()) throw ExceptionsGenerator.getException(ExceptionType.INVALID_OBJECT, "Incorrectly formed request");
         UserDtoSignUp userDtoSignUp= userService.createUser(userDto);
