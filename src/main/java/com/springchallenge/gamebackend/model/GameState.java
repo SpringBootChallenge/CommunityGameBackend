@@ -3,7 +3,6 @@ package com.springchallenge.gamebackend.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name="game_state")
@@ -25,13 +24,4 @@ public class GameState {
     @ManyToOne
     @JoinColumn(name="state", foreignKey = @ForeignKey(name="FK_GAME_STATE"))
     private State state;
-}
-
-@Embeddable
-@Data
-class GameStateKey implements Serializable{
-    @Column(name = "game_id")
-    private String gameId;
-    @Column(name = "user_id")
-    private String userId;
 }

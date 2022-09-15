@@ -1,5 +1,6 @@
 package com.springchallenge.gamebackend.service.user;
 
+import java.util.Optional;
 import com.springchallenge.gamebackend.dto.input.user.UserDto;
 import com.springchallenge.gamebackend.model.User;
 import com.springchallenge.gamebackend.dto.input.user.UserLoginDto;
@@ -16,4 +17,7 @@ public interface UserService {
     boolean isLogged(String userId);
 
     void logoutUser(String userId);
+
+    public Optional<User> findPossibleUserById(String id);
+
 }

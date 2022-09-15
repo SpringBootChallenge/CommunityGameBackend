@@ -4,6 +4,9 @@ import com.springchallenge.gamebackend.dto.input.user.UserDto;
 import com.springchallenge.gamebackend.dto.output.user.UserDtoSignUp;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.springchallenge.gamebackend.model.User;
@@ -11,8 +14,6 @@ import com.springchallenge.gamebackend.exception.ExceptionType;
 import com.springchallenge.gamebackend.repository.UserRepository;
 import com.springchallenge.gamebackend.dto.input.user.UserLoginDto;
 import com.springchallenge.gamebackend.exception.ExceptionsGenerator;
-
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,7 +26,7 @@ public class UserServiceImpl implements UserService {
         User user = new User(userDto);
         Boolean userByEmail = userRepository.findByEmail(user.getEmail()) == null;
         Boolean userByUsername = userRepository.findByUsername(user.getUsername()) == null;
-        if(userByEmail && userByUsername){
+        if (userByEmail && userByUsername) {
             userRepository.save(user);
             ModelMapper modelMapper = new ModelMapper();
             UserDtoSignUp userDtoSignUp = modelMapper.map(user, UserDtoSignUp.class);
@@ -36,20 +37,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(String id) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()) {
-            return userRepository.findById(id).get();
+        Optional<User> possibleUser = findPossibleUserById(id);
+        if (possibleUser.isPresent()) {
+            return possibleUser.get();
         }
-        throw ExceptionsGenerator.getException(ExceptionType.NOT_FOUND,
-                "There is no user with the supplied id.");
+        throw ExceptionsGenerator.getException(ExceptionType.NOT_FOUND, "There is no user with the supplied id");
+
     }
 
     @Override
     public UserDtoSignUp loginUser(UserLoginDto userLoginDto) {
         String username = userLoginDto.getUsername();
         User userExists = userRepository.findByUsername(username);
-        if(userExists != null){
-            if(reviewPassword(userExists.getPassword(), userLoginDto.getPassword())){
+        if (userExists != null) {
+            if (reviewPassword(userExists.getPassword(), userLoginDto.getPassword())) {
                 userExists.login();
                 userRepository.save(userExists);
                 ModelMapper modelMapper = new ModelMapper();
@@ -68,7 +69,7 @@ public class UserServiceImpl implements UserService {
         return user.isLogged();
     }
 
-    private boolean reviewPassword(String dbPassword, String userPassword){
+    private boolean reviewPassword(String dbPassword, String userPassword) {
         return dbPassword.equals(userPassword);
     }
 
@@ -77,5 +78,10 @@ public class UserServiceImpl implements UserService {
         User user = findById(userId);
         user.logout();
         userRepository.save(user);
+    }
+
+    @Override
+    public Optional<User> findPossibleUserById(String id) {
+        return userRepository.findById(id);
     }
 }

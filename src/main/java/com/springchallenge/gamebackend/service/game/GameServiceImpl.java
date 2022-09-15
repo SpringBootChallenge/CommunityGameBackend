@@ -44,32 +44,35 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game findById(String id) {
-        Optional<Game> game = gameRepo.findById(id);
-        if (game.isPresent()) {
-            return gameRepo.findById(id).get();
+        Optional<Game> possibleGame = findPossibleGameById(id);
+        if (possibleGame.isPresent()) {
+            return possibleGame.get();
         }
         throw ExceptionsGenerator.getException(ExceptionType.NOT_FOUND,
                 "There is no game with the supplied id.");
 
     }
 
-    public GameDto getGameById(String id) {
-        Optional<Game> game = gameRepo.findById(id);
-        if (game.isPresent()) {
-            ModelMapper mapper = new ModelMapper();
-            GameDto foundGame = mapper.map(game.get(), GameDto.class);
-            assignGameStatistics(foundGame);
-            return foundGame;
-        }
-        throw ExceptionsGenerator.getException(ExceptionType.NOT_FOUND,
-                "There is no game with the supplied id.");
+    @Override
+    public GameDto findGameDtoById(String id) {
+        Game game = findById(id);
+        ModelMapper mapper = new ModelMapper();
+        GameDto foundGame = mapper.map(game, GameDto.class);
+        assignGameStatistics(foundGame);
+        return foundGame;
     }
 
-    private void assignGameStatistics(GameDto game) {
+    @Override
+    public void assignGameStatistics(GameDto game) {
         game.setBacklogCount(gameRepo.countByState("BACKLOG"));
         game.setBeatCount(gameRepo.countByState("BEAT"));
         game.setRetiredCount(gameRepo.countByState("RETIRED"));
         game.setPlayingCount(gameRepo.countByState("PLAYING"));
+    }
+
+    @Override
+    public Optional<Game> findPossibleGameById(String id) {
+        return gameRepo.findById(id);
     }
 
 }
