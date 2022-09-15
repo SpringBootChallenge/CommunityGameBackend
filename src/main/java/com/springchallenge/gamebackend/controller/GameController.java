@@ -38,7 +38,6 @@ public class GameController {
 
     @GetMapping("/")
     public ResponseEntity<List<GameDto>> getGames(GameFilterCriteria filter) {
-        System.out.println(filter);
         return new ResponseEntity<>(
                 gameService.getFilteredGames(filter),
                 HttpStatus.OK);
