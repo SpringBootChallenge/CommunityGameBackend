@@ -71,4 +71,11 @@ public class UserServiceImpl implements UserService {
     private boolean reviewPassword(String dbPassword, String userPassword){
         return dbPassword.equals(userPassword);
     }
+
+    @Override
+    public void logoutUser(String userId) {
+        User user = findById(userId);
+        user.logout();
+        userRepository.save(user);
+    }
 }

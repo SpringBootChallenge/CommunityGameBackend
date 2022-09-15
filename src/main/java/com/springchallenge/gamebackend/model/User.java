@@ -50,4 +50,7 @@ public class User {
         this.logged = true;
     };
 
+    public void logout(){
+        this.logged = false;
+    };
 }

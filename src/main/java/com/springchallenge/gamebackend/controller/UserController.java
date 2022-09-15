@@ -32,4 +32,10 @@ public class UserController {
         UserDtoSignUp userDtoSignUp = userService.loginUser(userLoginDto);
         return new ResponseEntity<>(userDtoSignUp, HttpStatus.OK);
     }
+
+    @DeleteMapping("/logout")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void logoutUser(@RequestHeader(value = "user-id", required = true) String optionalHeader) {
+        userService.logoutUser(optionalHeader);
+    }
 }
