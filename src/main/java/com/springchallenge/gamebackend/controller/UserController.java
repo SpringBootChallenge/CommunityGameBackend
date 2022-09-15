@@ -35,7 +35,7 @@ public class UserController {
 
     @DeleteMapping("/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void logoutUser(@RequestHeader(value = "user-id", required = true) String optionalHeader) {
+    public void logoutUser(@RequestHeader(value = "User-id", required = true) String optionalHeader) {
         userService.logoutUser(optionalHeader);
     }
 }

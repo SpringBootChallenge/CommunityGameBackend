@@ -7,4 +7,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 @Repository
 public interface ReviewRepository extends PagingAndSortingRepository<Review, String> {
     Review findByGameIdAndUserId(String gameId, String userId);
+
+    Review findByUserIdAndId(String userId, String id);
 }
