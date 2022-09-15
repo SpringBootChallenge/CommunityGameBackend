@@ -5,5 +5,5 @@ import com.springchallenge.gamebackend.dto.output.review.ReviewDtoOutput;
 
 public interface ReviewService {
 
-    ReviewDtoOutput createReview(ReviewDto reviewDto);
+    ReviewDtoOutput createReview(ReviewDto reviewDto, String userIdHeader);
 }

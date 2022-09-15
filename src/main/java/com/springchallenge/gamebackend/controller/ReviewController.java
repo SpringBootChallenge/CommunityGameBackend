@@ -3,6 +3,7 @@ package com.springchallenge.gamebackend.controller;
 
 import javax.validation.Valid;
 
+import com.springchallenge.gamebackend.service.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,15 +22,17 @@ public class ReviewController {
     @Autowired
     private ReviewService reviewService;
 
-    @GetMapping("/health-check")
-    public ResponseEntity<String> healthCheck(@RequestHeader(value = "user-id", required = false) String optionalHeader){
-        return ResponseEntity.ok("OK");
-    }
+    @Autowired
+    private UserService userService;
 
     @PostMapping
-    public ResponseEntity<ReviewDtoOutput> createReview(@RequestBody @Valid ReviewDto reviewDto, BindingResult bindingResult){
+    public ResponseEntity<ReviewDtoOutput> createReview(@RequestHeader(value = "user-id", required = true) String userIdHeader,
+                                                        @RequestBody @Valid ReviewDto reviewDto, BindingResult bindingResult){
         if(bindingResult.hasErrors()) throw ExceptionsGenerator.getException(ExceptionType.INVALID_OBJECT, "Incorrectly formed request");
-        ReviewDtoOutput reviewDtoOutput = reviewService.createReview(reviewDto);
-        return new ResponseEntity<>(reviewDtoOutput, HttpStatus.CREATED);
+        if(userService.isLogged(userIdHeader)){
+            ReviewDtoOutput reviewDtoOutput = reviewService.createReview(reviewDto, userIdHeader);
+            return new ResponseEntity<>(reviewDtoOutput, HttpStatus.CREATED);
+        }
+        throw ExceptionsGenerator.getException(ExceptionType.UNAUTHORIZED, "You must be logged in to the server");
     }
 }

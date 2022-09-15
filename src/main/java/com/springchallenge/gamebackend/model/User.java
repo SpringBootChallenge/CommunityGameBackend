@@ -46,4 +46,11 @@ public class User {
         this(userDto.getEmail(), userDto.getUsername(), userDto.getPassword());
     }
 
+    public void login(){
+        this.logged = true;
+    };
+
+    public void logout(){
+        this.logged = false;
+    };
 }
