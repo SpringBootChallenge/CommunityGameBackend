@@ -1,6 +1,7 @@
 package com.springchallenge.gamebackend.model;
 
 
+import com.springchallenge.gamebackend.dto.input.review.UpdateReviewDto;
 import lombok.Data;
 
 import java.util.UUID;
@@ -48,4 +49,8 @@ public class Review {
         this.game = game;
     }
 
+    public void update(UpdateReviewDto updateReviewDto){
+        this.score = updateReviewDto.getScore();
+        this.text = updateReviewDto.getText();
+    }
 }

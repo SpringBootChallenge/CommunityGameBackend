@@ -3,6 +3,7 @@ package com.springchallenge.gamebackend.controller;
 
 import javax.validation.Valid;
 
+import com.springchallenge.gamebackend.dto.input.review.UpdateReviewDto;
 import com.springchallenge.gamebackend.service.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +27,24 @@ public class ReviewController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<ReviewDtoOutput> createReview(@RequestHeader(value = "user-id", required = true) String userIdHeader,
+    public ResponseEntity<ReviewDtoOutput> createReview(@RequestHeader(value = "User-id", required = true) String userIdHeader,
                                                         @RequestBody @Valid ReviewDto reviewDto, BindingResult bindingResult){
         if(bindingResult.hasErrors()) throw ExceptionsGenerator.getException(ExceptionType.INVALID_OBJECT, "Incorrectly formed request");
         if(userService.isLogged(userIdHeader)){
             ReviewDtoOutput reviewDtoOutput = reviewService.createReview(reviewDto, userIdHeader);
             return new ResponseEntity<>(reviewDtoOutput, HttpStatus.CREATED);
+        }
+        throw ExceptionsGenerator.getException(ExceptionType.UNAUTHORIZED, "You must be logged in to the server");
+    }
+
+    @PutMapping("/{reviewId}")
+    public ResponseEntity<ReviewDtoOutput> update(@RequestHeader(value = "User-id", required = false) String userIdHeader,
+                                                        @RequestBody @Valid UpdateReviewDto updateReviewDto, BindingResult bindingResult,
+                                                        @PathVariable String reviewId){
+        if(bindingResult.hasErrors()) throw ExceptionsGenerator.getException(ExceptionType.INVALID_OBJECT, "Incorrectly formed request");
+        if(userService.isLogged(userIdHeader)){
+            ReviewDtoOutput reviewDtoOutput = reviewService.updateReview(updateReviewDto, userIdHeader,reviewId);
+            return new ResponseEntity<>(reviewDtoOutput, HttpStatus.OK);
         }
         throw ExceptionsGenerator.getException(ExceptionType.UNAUTHORIZED, "You must be logged in to the server");
     }
