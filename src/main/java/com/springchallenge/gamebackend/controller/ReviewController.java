@@ -1,5 +1,6 @@
 package com.springchallenge.gamebackend.controller;
 
+import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import com.springchallenge.gamebackend.service.review.ReviewService;
 import com.springchallenge.gamebackend.exception.ExceptionsGenerator;
 import com.springchallenge.gamebackend.dto.input.review.UpdateReviewDto;
 import com.springchallenge.gamebackend.dto.output.review.ReviewDtoOutput;
+import com.springchallenge.gamebackend.dto.input.review.ReviewFilterCriteria;
 
 @RestController
 @RequestMapping("/reviews")
@@ -55,5 +57,12 @@ public class ReviewController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         throw ExceptionsGenerator.getException(ExceptionType.UNAUTHORIZED, "You must be logged in to the server");
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<List<ReviewDtoOutput>> getGames(ReviewFilterCriteria filter) {
+        return new ResponseEntity<>(
+                reviewService.getFilteredGames(filter),
+                HttpStatus.OK);
     }
 }
