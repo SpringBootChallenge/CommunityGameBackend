@@ -1,11 +1,13 @@
 package com.springchallenge.gamebackend.service.review;
 
 import com.springchallenge.gamebackend.dto.input.review.ReviewDto;
+import com.springchallenge.gamebackend.exception.customexceptions.DuplicateEntityException;
 import com.springchallenge.gamebackend.exception.customexceptions.ObjectNotFoundException;
 import com.springchallenge.gamebackend.exception.customexceptions.UnauthorizedException;
 import com.springchallenge.gamebackend.model.Game;
 import com.springchallenge.gamebackend.model.GameState;
 import com.springchallenge.gamebackend.model.GameStateKey;
+import com.springchallenge.gamebackend.model.Review;
 import com.springchallenge.gamebackend.repository.GameStateRepository;
 import com.springchallenge.gamebackend.repository.ReviewRepository;
 import com.springchallenge.gamebackend.service.game.GameService;
@@ -48,6 +50,22 @@ public class ReviewServiceTest {
         });
         // assert
         assertEquals("You can only create reviews for yourself", exception.getMessage());
+    }
+
+    @Test
+    void createReview_reviewAlreadyCreated_throwDuplicateEntityException() {
+        // Arrange
+        String userId = "00018a93-51a7-4928-b869-77a2a75695fb";
+        ReviewDto validDto= new ReviewDto();
+        validDto.setUserId(userId);
+        Review createdReview= Mockito.mock(Review.class);
+        when(reviewRepo.findByGameIdAndUserId(validDto.getGameId(),userId)).thenReturn(createdReview);
+        // act
+        Exception exception = assertThrows(DuplicateEntityException.class, () -> {
+            reviewService.createReview(validDto, userId);
+        });
+        // assert
+        assertEquals("Review already created", exception.getMessage());
     }
 
 }
