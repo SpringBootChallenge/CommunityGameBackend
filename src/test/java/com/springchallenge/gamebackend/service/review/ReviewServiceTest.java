@@ -1,6 +1,7 @@
 package com.springchallenge.gamebackend.service.review;
 
 import com.springchallenge.gamebackend.dto.input.review.ReviewDto;
+import com.springchallenge.gamebackend.dto.input.review.UpdateReviewDto;
 import com.springchallenge.gamebackend.dto.output.review.ReviewDtoOutput;
 import com.springchallenge.gamebackend.dto.output.user.UserDto;
 import com.springchallenge.gamebackend.exception.customexceptions.DuplicateEntityException;
@@ -105,6 +106,21 @@ public class ReviewServiceTest {
         // assert
         verify(reviewRepo).save(expectedReview);
         assertEquals(expectedDto, createdReviewDto);
+    }
+
+    @Test
+    void updateReview_nonExistentReview_throwUnauthorizedException() {
+        // Arrange
+        String userId = "00018a93-51a7-4928-b869-77a2a75695fb";
+        String reviewId = "00018ds-f4vdd4-b869-77a2a75695fb";
+        UpdateReviewDto inputReviewDto= Mockito.mock(UpdateReviewDto.class);
+        when(reviewRepo.findByUserIdAndId(userId,reviewId)).thenReturn(null);
+        // act
+        Exception exception = assertThrows(UnauthorizedException.class, () -> {
+            reviewService.updateReview(inputReviewDto, userId,reviewId);
+        });
+        // assert
+        assertEquals("You can only update your own reviews", exception.getMessage());
     }
 
 }
