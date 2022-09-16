@@ -12,8 +12,10 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .components(new Components())
-                .info(new Info().title("Game Community - REST API").description(
-                        "Spring Boot application for the gaming community"));
+                .info(new Info()
+                        .version("1.0")
+                        .title("Game Community - REST API")
+                        .description( "Spring Boot application for the gaming community"));
     }
 
 
