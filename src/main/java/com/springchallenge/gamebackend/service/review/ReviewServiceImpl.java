@@ -1,5 +1,6 @@
 package com.springchallenge.gamebackend.service.review;
 
+import com.springchallenge.gamebackend.dto.input.review.ReviewFilterCriteria;
 import com.springchallenge.gamebackend.dto.input.review.UpdateReviewDto;
 import org.modelmapper.ModelMapper;
 
@@ -14,9 +15,13 @@ import com.springchallenge.gamebackend.repository.ReviewRepository;
 import com.springchallenge.gamebackend.exception.ExceptionsGenerator;
 import com.springchallenge.gamebackend.dto.output.review.ReviewDtoOutput;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -75,4 +80,14 @@ public class ReviewServiceImpl implements ReviewService {
         if(reviewRepository.findByUserIdAndId(userId, reviewId) == null) throw ExceptionsGenerator.getException(ExceptionType.UNAUTHORIZED, "You can only delete your own reviews");
         reviewRepository.deleteById(reviewId);
     }
+
+//    @Override
+//    public List<ReviewDtoOutput> getFilteredGames(ReviewFilterCriteria filter) {
+//        List<Review> reviews= new ArrayList<>();
+//        Pageable pagination = PageRequest.of(filter.getPage() - 1, filter.getLimit());
+//        reviewRepository.findByFilter(filter.getGameId(), filter.getUserId(), pagination);
+//        return null;
+//    }
+
+
 }
