@@ -4,15 +4,14 @@ import com.springchallenge.gamebackend.dto.input.review.ReviewDto;
 import com.springchallenge.gamebackend.dto.input.review.ReviewFilterCriteria;
 import com.springchallenge.gamebackend.dto.input.review.UpdateReviewDto;
 import com.springchallenge.gamebackend.dto.output.review.ReviewDtoOutput;
-import com.springchallenge.gamebackend.dto.output.user.UserDto;
 import com.springchallenge.gamebackend.exception.customexceptions.DuplicateEntityException;
 import com.springchallenge.gamebackend.exception.customexceptions.ObjectNotFoundException;
 import com.springchallenge.gamebackend.exception.customexceptions.UnauthorizedException;
-import com.springchallenge.gamebackend.model.*;
-import com.springchallenge.gamebackend.repository.GameStateRepository;
+import com.springchallenge.gamebackend.model.Game;
+import com.springchallenge.gamebackend.model.Review;
+import com.springchallenge.gamebackend.model.User;
 import com.springchallenge.gamebackend.repository.ReviewRepository;
 import com.springchallenge.gamebackend.service.game.GameService;
-import com.springchallenge.gamebackend.service.gamestate.GameStateServiceImpl;
 import com.springchallenge.gamebackend.service.user.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,10 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -178,6 +174,25 @@ public class ReviewServiceTest {
         Pageable pagination = PageRequest.of(filter.getPage() - 1, filter.getLimit());
         when(reviewRepo.findByFilter(filter.getGameId(), filter.getUserId(),pagination)).thenReturn(new ArrayList<>());
         List<ReviewDtoOutput> expectedList= new ArrayList<>();
+        // act
+        List<ReviewDtoOutput> actualList= reviewService.getFilteredReviews(filter);
+        // assert
+        assertEquals(expectedList, actualList);
+    }
+
+    @Test
+    void getFilteredReviews_filtersReturnReviews_returnList() {
+        // Arrange
+        ReviewFilterCriteria filter= new ReviewFilterCriteria();
+        Pageable pagination = PageRequest.of(filter.getPage() - 1, filter.getLimit());
+        List<Review> reviewsToReturn= Arrays.asList(Mockito.mock(Review.class), Mockito.mock(Review.class));
+        when(reviewRepo.findByFilter(filter.getGameId(), filter.getUserId(),pagination)).thenReturn(reviewsToReturn);
+        ModelMapper mapper= new ModelMapper();
+        List<ReviewDtoOutput> expectedList= new ArrayList<>();
+        reviewsToReturn.forEach(review-> {
+            expectedList.add(mapper.map(review, ReviewDtoOutput.class));
+        });
+
         // act
         List<ReviewDtoOutput> actualList= reviewService.getFilteredReviews(filter);
         // assert
