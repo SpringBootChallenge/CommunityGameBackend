@@ -22,6 +22,8 @@ For the development of the challenge, we first considered which database was bes
 
 With the database selected, the next step was to create the data model. How the entities were going to be structured and what relationships were going to exist between them. Once we had the data model defined, we created the database and created the corresponding entities both in the database and in Java.
 
+![](resources/img/dataModel.png)
+
 With the entities ready, we divided the work for the development of the requested services. For each major concept (Game, Review and User) we created a rest controller to handle the requests sent to those endpoints. The services and repositories are not only for the big concepts mentioned above, there is also a service to manage the game states (GameStateService) and a repository for each entity (Fame, GameState, Review, State, User), this in order to maintain the principle of single responsibility in each repository.
 ## Tools (and libraries)
 ### Development
