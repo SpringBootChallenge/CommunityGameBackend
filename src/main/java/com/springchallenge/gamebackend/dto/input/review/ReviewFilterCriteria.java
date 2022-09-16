@@ -6,8 +6,8 @@ import java.io.Serializable;
 
 @Data
 public class ReviewFilterCriteria implements Serializable {
-    private Integer page = 1;
-    private Integer limit = 10;
     private String gameId;
     private String userId;
+    private Integer page = 1;
+    private Integer limit = 10;
 }
