@@ -80,7 +80,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<ReviewDtoOutput> getFilteredGames(ReviewFilterCriteria filter) {
+    public List<ReviewDtoOutput> getFilteredReviews(ReviewFilterCriteria filter) {
         List<Review> reviews= new ArrayList<>();
         ModelMapper mapper = new ModelMapper();
         Pageable pagination = PageRequest.of(filter.getPage() - 1, filter.getLimit());

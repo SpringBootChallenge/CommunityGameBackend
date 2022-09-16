@@ -18,5 +18,5 @@ public interface ReviewService {
 
     void deleteReview(String userId, String reviewId);
 
-    List<ReviewDtoOutput> getFilteredGames(ReviewFilterCriteria filter);
+    List<ReviewDtoOutput> getFilteredReviews(ReviewFilterCriteria filter);
 }
