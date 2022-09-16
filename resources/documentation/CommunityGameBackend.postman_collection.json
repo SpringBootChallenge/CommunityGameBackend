@@ -1,0 +1,924 @@
+{
+	"info": {
+		"_postman_id": "8a28061b-2920-45e9-be47-34529caf1756",
+		"name": "CommunityGameBackend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create",
+					"item": [
+						{
+							"name": "SignUpDuplicateEmail Copy",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "SignUp",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"email\": \"test@mail.com\", \r\n\t\"username\": \"test\", \r\n\t\"password\": \"psw222\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/signup",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"signup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "SignUpDuplicateUsername",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"email\": \"tessdaft@mail.com\", \r\n\t\"username\": \"test\", \r\n\t\"password\": \"psw222\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/signup",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"signup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "SignUpDuplicateEmail",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"email\": \"test@mail.com\", \r\n\t\"username\": \"tesssst\", \r\n\t\"password\": \"psw222\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/signup",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"signup"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Login/Logout",
+					"item": [
+						{
+							"name": "LoginUser",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"username\": \"pichisito\", \r\n\t\"password\": \"psw222\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "LoginUserWrongUsername",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"username\": \"pichisitooo\", \r\n\t\"password\": \"psw222\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "LoginUserWrongPassword",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"username\": \"pichisito\", \r\n\t\"password\": \"psw1222\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "LogoutUser",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "User-id",
+										"value": "45778664-49c3-436a-a4e9-9620d19b83cc",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/logout",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"logout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "LogoutUserNonExistent",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "User-id",
+										"value": "db11b5ec-d17f-4d87-9c1c-4bc240edc2b1",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/logout",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"logout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "LogoutUserWithoutHeader",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "User-id",
+										"value": "db11b5ec-d17f-4d87-9c1c-4bc240edc2b1",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/logout",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Game",
+			"item": [
+				{
+					"name": "GetAllGames",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/games/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"games",
+								""
+							],
+							"query": [
+								{
+									"key": "genre",
+									"value": "Sports",
+									"disabled": true
+								},
+								{
+									"key": "title",
+									"value": "恶魔迷宫",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetGamesWithFilters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/games/?title=恶魔迷宫&limit=10&page=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"games",
+								""
+							],
+							"query": [
+								{
+									"key": "genre",
+									"value": "Sports",
+									"disabled": true
+								},
+								{
+									"key": "platform",
+									"value": "PC",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "players",
+									"disabled": true
+								},
+								{
+									"key": "title",
+									"value": "恶魔迷宫"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LoadGames",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/games/load",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"games",
+								"load"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SetGameState",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "user-id",
+								"value": "45778664-49c3-436a-a4e9-9620d19b83cc",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"state\": \"BACKLOG\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/games/00000c3f-cf64-4989-ba02-7472a27bf8f5/state",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"games",
+								"00000c3f-cf64-4989-ba02-7472a27bf8f5",
+								"state"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RemoveGameState",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "user-id",
+								"value": "45778664-49c3-436a-a4e9-9620d19b83cc",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"state\": \"BACKLOG\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/games/00000c3f-cf64-4989-ba02-7472a27bf8f5/state",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"games",
+								"00000c3f-cf64-4989-ba02-7472a27bf8f5",
+								"state"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Review",
+			"item": [
+				{
+					"name": "Get",
+					"item": [
+						{
+							"name": "GetAllReviews",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/reviews",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAllReviewsByGameId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/reviews?gameId=00000c3f-cf64-4989-ba02-7472a27bf8f5",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "gameId",
+											"value": "00000c3f-cf64-4989-ba02-7472a27bf8f5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAllREviewsByUserId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/reviews?userId=a3863335-59e5-42e1-abf4-0fbc4af8c111&limit=5",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "a3863335-59e5-42e1-abf4-0fbc4af8c111"
+										},
+										{
+											"key": "limit",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetReviewByUserIdAndGameId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/reviews?gameId=00000c3f-cf64-4989-ba02-7472a27bf8f5&userId=a3863335-59e5-42e1-abf4-0fbc4af8c111",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "gameId",
+											"value": "00000c3f-cf64-4989-ba02-7472a27bf8f5"
+										},
+										{
+											"key": "userId",
+											"value": "a3863335-59e5-42e1-abf4-0fbc4af8c111"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Create",
+					"item": [
+						{
+							"name": "CreateReview",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "User-id",
+										"value": "45778664-49c3-436a-a4e9-9620d19b83cc",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"score\": 10, \r\n\t\"text\": \"would play again\", \r\n\t\"gameId\": \"001d0901-3c06-465d-9969-349dd8ee8ed3\", \r\n\t\"userId\": \"45778664-49c3-436a-a4e9-9620d19b83cc\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/reviews",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "CreateReviewDifferentId",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "User-id",
+										"value": "45778664-49c3-436a-a4e9-9620d19b83cc",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"score\": 10, \r\n\t\"text\": \"would play again\", \r\n\t\"gameId\": \"00000c3f-cf64-4989-ba02-7472a27bf8f5\", \r\n\t\"userId\": \"a3863335-59e5-42e1-abf4-0fbc4af8c111\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/reviews",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "CreateReviewWithoutLogin",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "User-id",
+										"value": "a3863335-59e5-42e1-abf4-0fbc4af8c111",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"score\": 10, \r\n\t\"text\": \"would play again\", \r\n\t\"gameId\": \"00000c3f-cf64-4989-ba02-7472a27bf8f5\", \r\n\t\"userId\": \"a3863335-59e5-42e1-abf4-0fbc4af8c111\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/reviews",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "CreateReviewScoreNoValid",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "User-id",
+										"value": "45778664-49c3-436a-a4e9-9620d19b83cc",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"score\": 11, \r\n\t\"text\": \"would play again\", \r\n\t\"gameId\": \"00000c3f-cf64-4989-ba02-7472a27bf8f5\", \r\n\t\"userId\": \"45778664-49c3-436a-a4e9-9620d19b83cc\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/reviews",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "CreateReviewScoreNoValid2",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "User-id",
+										"value": "45778664-49c3-436a-a4e9-9620d19b83cc",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"score\": -1, \r\n\t\"text\": \"would play again\", \r\n\t\"gameId\": \"00000c3f-cf64-4989-ba02-7472a27bf8f5\", \r\n\t\"userId\": \"45778664-49c3-436a-a4e9-9620d19b83cc\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/reviews",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Update",
+					"item": [
+						{
+							"name": "UpdateReview",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "User-id",
+										"value": "45778664-49c3-436a-a4e9-9620d19b83cc",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"score\": 5, \r\n\t\"text\": \"Update Review\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/reviews/7571649e-5765-4f07-a6f7-2ad90fef8206",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews",
+										"7571649e-5765-4f07-a6f7-2ad90fef8206"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UpdateReviewAnotherFields",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "User-id",
+										"value": "45778664-49c3-436a-a4e9-9620d19b83cc",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"score\": 7, \r\n\t\"text\": \"ChangeUpdate\",\r\n\t\"gameId\": \"Tried\", \r\n\t\"userId\": \"457764-49c3-436a-a4e9-9620d19b83cc\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/reviews/7571649e-5765-4f07-a6f7-2ad90fef8206",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews",
+										"7571649e-5765-4f07-a6f7-2ad90fef8206"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UpdateReviewScoreNoValid",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "User-id",
+										"value": "45778664-49c3-436a-a4e9-9620d19b83cc",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"score\": 100, \r\n\t\"text\": \"UpdateReview\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/reviews/7571649e-5765-4f07-a6f7-2ad90fef8206",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews",
+										"7571649e-5765-4f07-a6f7-2ad90fef8206"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UpdateReviewDifferentUser",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "User-id",
+										"value": "45778664-49c3-436a-a4e9-9620d19b83cc",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"score\": 5, \r\n\t\"text\": \"UpdateRevimmmew\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/reviews/faf21315-42ac-451b-b2a3-9f3ee20c4adc",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews",
+										"faf21315-42ac-451b-b2a3-9f3ee20c4adc"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Delete",
+					"item": [
+						{
+							"name": "DeleteReview",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "User-id",
+										"value": "45778664-49c3-436a-a4e9-9620d19b83cc",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/reviews/2ed54b2c-082b-4b00-8a43-2549ba1295c7",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews",
+										"2ed54b2c-082b-4b00-8a43-2549ba1295c7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteReviewDifferentUser",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "User-id",
+										"value": "45778664-49c3-436a-a4e9-9620d19b83cc",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/reviews/176f38a3-ac46-4f4d-a51e-a600f63073ac",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews",
+										"176f38a3-ac46-4f4d-a51e-a600f63073ac"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "default"
+		}
+	]
+}
