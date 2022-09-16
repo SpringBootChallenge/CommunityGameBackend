@@ -141,4 +141,17 @@ public class ReviewServiceTest {
         assertEquals(expectedDto, updatedReview);
     }
 
+    @Test
+    void findById_nonExistentReview_throwObjectNotFoundException() {
+        // Arrange
+        String nonExistentReview = "NON-EXISTENT";
+       when(reviewRepo.findById(nonExistentReview)).thenReturn(Optional.empty());
+        // act
+        Exception exception = assertThrows(ObjectNotFoundException.class, () -> {
+            reviewService.findById(nonExistentReview);
+        });
+        // assert
+        assertEquals( "There is no review with the supplied id.", exception.getMessage());
+    }
+
 }
