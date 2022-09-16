@@ -123,4 +123,22 @@ public class ReviewServiceTest {
         assertEquals("You can only update your own reviews", exception.getMessage());
     }
 
+    @Test
+    void updateReview_validReview_callRepoToSave() {
+        // Arrange
+        String userId = "00018a93-51a7-4928-b869-77a2a75695fb";
+        String reviewId = "00018ds-f4vdd4-b869-77a2a75695fb";
+        UpdateReviewDto inputReviewDto= Mockito.mock(UpdateReviewDto.class);
+        Review expectedReview= new Review();
+        when(reviewRepo.findByUserIdAndId(userId,reviewId)).thenReturn(expectedReview);
+        when(reviewRepo.findById(reviewId)).thenReturn(Optional.of(expectedReview));
+        expectedReview.update(inputReviewDto);
+        ReviewDtoOutput expectedDto=new ModelMapper().map(expectedReview, ReviewDtoOutput.class);
+        // act
+        ReviewDtoOutput updatedReview= reviewService.updateReview(inputReviewDto, userId,reviewId);
+        // assert
+        verify(reviewRepo).save(expectedReview);
+        assertEquals(expectedDto, updatedReview);
+    }
+
 }
