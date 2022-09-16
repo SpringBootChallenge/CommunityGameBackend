@@ -62,7 +62,7 @@ public class ReviewController {
     @GetMapping
     public ResponseEntity<List<ReviewDtoOutput>> getGames(ReviewFilterCriteria filter) {
         return new ResponseEntity<>(
-                reviewService.getFilteredGames(filter),
+                reviewService.getFilteredReviews(filter),
                 HttpStatus.OK);
     }
 }
