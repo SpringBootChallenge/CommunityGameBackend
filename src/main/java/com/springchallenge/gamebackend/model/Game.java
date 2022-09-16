@@ -27,11 +27,11 @@ public class Game {
     private LocalDate releaseDate;
     @Column(name = "image")
     private String image;
-    @Column(name = "update_at")
-    private LocalDateTime updateAt;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "update_by", foreignKey = @ForeignKey(name = "FK_GAME_USER"))
+    @JoinColumn(name = "updated_by", foreignKey = @ForeignKey(name = "FK_GAME_USER"))
     private User updatedBy;
 
     @OneToMany(mappedBy = "user")
@@ -39,7 +39,7 @@ public class Game {
 
     public Game() {
         this.id = UUID.randomUUID().toString();
-        this.updateAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
 }

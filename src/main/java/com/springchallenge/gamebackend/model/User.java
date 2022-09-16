@@ -45,4 +45,12 @@ public class User {
     public User(UserDto userDto){
         this(userDto.getEmail(), userDto.getUsername(), userDto.getPassword());
     }
+
+    public void login(){
+        this.logged = true;
+    };
+
+    public void logout(){
+        this.logged = false;
+    };
 }

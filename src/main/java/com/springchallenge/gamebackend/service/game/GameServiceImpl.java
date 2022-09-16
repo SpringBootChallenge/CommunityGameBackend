@@ -9,16 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.springchallenge.gamebackend.dto.input.game.GameFilterCriteria;
+import com.springchallenge.gamebackend.model.Game;
+import com.springchallenge.gamebackend.util.CSVReader;
 import com.springchallenge.gamebackend.dto.output.game.GameDto;
 import com.springchallenge.gamebackend.exception.ExceptionType;
-import com.springchallenge.gamebackend.exception.ExceptionsGenerator;
-import com.springchallenge.gamebackend.model.Game;
 import com.springchallenge.gamebackend.repository.GameRepository;
-import com.springchallenge.gamebackend.util.CSVReader;
+import com.springchallenge.gamebackend.exception.ExceptionsGenerator;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -46,15 +47,14 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public GameDto getGameById(String id) {
-        Optional<Game> game = gameRepo.findById(id);
-        if (game.isPresent()) {
-            ModelMapper mapper = new ModelMapper();
-            GameDto foundGame = mapper.map(game.get(), GameDto.class);
-            assignGameStatistics(foundGame);
-            return foundGame;
+    public Game findById(String id) {
+        Optional<Game> possibleGame = findPossibleGameById(id);
+        if (possibleGame.isPresent()) {
+            return possibleGame.get();
         }
-        throw ExceptionsGenerator.getException(ExceptionType.NOT_FOUND, "There is no game with the supplied id.");
+        throw ExceptionsGenerator.getException(ExceptionType.NOT_FOUND,
+                "There is no game with the supplied id.");
+
     }
 
     private void assignGameStatistics(GameDto game) {
@@ -87,6 +87,20 @@ public class GameServiceImpl implements GameService {
                     return gameDto;
                 })
                 .toList();
+    }
+
+    @Override
+    public GameDto findGameDtoById(String id) {
+        Game game = findById(id);
+        ModelMapper mapper = new ModelMapper();
+        GameDto foundGame = mapper.map(game, GameDto.class);
+        assignGameStatistics(foundGame);
+        return foundGame;
+    }
+
+    @Override
+    public Optional<Game> findPossibleGameById(String id) {
+        return gameRepo.findById(id);
     }
 
 }

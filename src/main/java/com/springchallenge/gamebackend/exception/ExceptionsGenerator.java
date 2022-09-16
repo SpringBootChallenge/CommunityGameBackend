@@ -1,12 +1,7 @@
 package com.springchallenge.gamebackend.exception;
 
+import com.springchallenge.gamebackend.exception.customexceptions.*;
 import org.springframework.stereotype.Component;
-
-import com.springchallenge.gamebackend.exception.customexceptions.DuplicateEntityException;
-import com.springchallenge.gamebackend.exception.customexceptions.InvalidCredentialsException;
-import com.springchallenge.gamebackend.exception.customexceptions.InvalidFileException;
-import com.springchallenge.gamebackend.exception.customexceptions.InvalidObjectException;
-import com.springchallenge.gamebackend.exception.customexceptions.ObjectNotFoundException;
 
 @Component
 public class ExceptionsGenerator {
@@ -23,6 +18,8 @@ public class ExceptionsGenerator {
                 return new InvalidObjectException(message);
             case INVALID_FILE:
                 return new InvalidFileException(message);
+            case UNAUTHORIZED:
+                return new UnauthorizedException(message);
             default:
                 return new RuntimeException(message);
         }
