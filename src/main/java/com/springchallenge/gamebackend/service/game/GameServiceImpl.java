@@ -3,6 +3,8 @@ package com.springchallenge.gamebackend.service.game;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +88,7 @@ public class GameServiceImpl implements GameService {
                     assignGameStatistics(gameDto);
                     return gameDto;
                 })
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override
