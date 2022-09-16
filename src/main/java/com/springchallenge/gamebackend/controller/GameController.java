@@ -47,7 +47,7 @@ public class GameController {
         gameService.loadGamesFromCSV();
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<GameDto>> getGames(GameFilterCriteria filter) {
         return new ResponseEntity<>(
                 gameService.getFilteredGames(filter),

@@ -59,7 +59,7 @@ public class ReviewController {
         throw ExceptionsGenerator.getException(ExceptionType.UNAUTHORIZED, "You must be logged in to the server");
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<ReviewDtoOutput>> getGames(ReviewFilterCriteria filter) {
         return new ResponseEntity<>(
                 reviewService.getFilteredReviews(filter),
