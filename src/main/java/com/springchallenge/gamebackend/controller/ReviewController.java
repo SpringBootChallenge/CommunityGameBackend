@@ -3,6 +3,7 @@ package com.springchallenge.gamebackend.controller;
 import java.util.List;
 import javax.validation.Valid;
 
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,7 +61,7 @@ public class ReviewController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ReviewDtoOutput>> getGames(ReviewFilterCriteria filter) {
+    public ResponseEntity<List<ReviewDtoOutput>> getGames(@ParameterObject ReviewFilterCriteria filter) {
         return new ResponseEntity<>(
                 reviewService.getFilteredReviews(filter),
                 HttpStatus.OK);

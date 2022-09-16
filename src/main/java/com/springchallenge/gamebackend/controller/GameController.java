@@ -2,6 +2,7 @@ package com.springchallenge.gamebackend.controller;
 
 import java.util.List;
 
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +49,7 @@ public class GameController {
     }
 
     @GetMapping
-    public ResponseEntity<List<GameDto>> getGames(GameFilterCriteria filter) {
+    public ResponseEntity<List<GameDto>> getGames(@ParameterObject GameFilterCriteria filter) {
         return new ResponseEntity<>(
                 gameService.getFilteredGames(filter),
                 HttpStatus.OK);
