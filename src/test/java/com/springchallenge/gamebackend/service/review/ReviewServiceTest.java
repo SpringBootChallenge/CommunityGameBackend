@@ -141,4 +141,29 @@ public class ReviewServiceTest {
         assertEquals(expectedDto, updatedReview);
     }
 
+    @Test
+    void findById_nonExistentReview_throwObjectNotFoundException() {
+        // Arrange
+        String nonExistentReview = "NON-EXISTENT";
+       when(reviewRepo.findById(nonExistentReview)).thenReturn(Optional.empty());
+        // act
+        Exception exception = assertThrows(ObjectNotFoundException.class, () -> {
+            reviewService.findById(nonExistentReview);
+        });
+        // assert
+        assertEquals( "There is no review with the supplied id.", exception.getMessage());
+    }
+
+    @Test
+    void findById_existentReview_returnReview() {
+        // Arrange
+        String reviewId = "00018a93-51a7-4928-b869-77a2a75695fb";
+        Review expectedReview= Mockito.mock(Review.class);
+        when(reviewRepo.findById(reviewId)).thenReturn(Optional.of(expectedReview));
+        // act
+        Review actualReview=reviewService.findById(reviewId);
+        // assert
+        assertEquals( expectedReview,actualReview);
+    }
+
 }
