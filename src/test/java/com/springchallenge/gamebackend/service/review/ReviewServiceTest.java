@@ -1,6 +1,7 @@
 package com.springchallenge.gamebackend.service.review;
 
 import com.springchallenge.gamebackend.dto.input.review.ReviewDto;
+import com.springchallenge.gamebackend.dto.input.review.ReviewFilterCriteria;
 import com.springchallenge.gamebackend.dto.input.review.UpdateReviewDto;
 import com.springchallenge.gamebackend.dto.output.review.ReviewDtoOutput;
 import com.springchallenge.gamebackend.dto.output.user.UserDto;
@@ -20,9 +21,13 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -164,6 +169,19 @@ public class ReviewServiceTest {
         Review actualReview=reviewService.findById(reviewId);
         // assert
         assertEquals( expectedReview,actualReview);
+    }
+
+    @Test
+    void getFilteredReviews_filtersDoNotReturnReviews_returnEmptyList() {
+        // Arrange
+        ReviewFilterCriteria filter= new ReviewFilterCriteria();
+        Pageable pagination = PageRequest.of(filter.getPage() - 1, filter.getLimit());
+        when(reviewRepo.findByFilter(filter.getGameId(), filter.getUserId(),pagination)).thenReturn(new ArrayList<>());
+        List<ReviewDtoOutput> expectedList= new ArrayList<>();
+        // act
+        List<ReviewDtoOutput> actualList= reviewService.getFilteredReviews(filter);
+        // assert
+        assertEquals(expectedList, actualList);
     }
 
 }
