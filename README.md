@@ -37,6 +37,8 @@ With the entities ready, we divided the work for the development of the requeste
 
 **Apache Commons CSV:** As a library for reading CSV files.
 
+**Springdoc-openapi** As a library to automate the generation of API documentation
+
 **Swagger:** As a framework for generating API documentation
 
 **JUni:** As a framework for writing and running tests.
