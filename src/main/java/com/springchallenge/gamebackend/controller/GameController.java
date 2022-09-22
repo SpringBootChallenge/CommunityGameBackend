@@ -34,7 +34,7 @@ public class GameController {
         return new ResponseEntity<>(game, HttpStatus.OK);
     }
 
-    @GetMapping("/load")
+    @PostMapping("/load")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void loadGamesFromCSV() {
         gameService.loadGamesFromCSV();
