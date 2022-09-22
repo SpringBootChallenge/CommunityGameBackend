@@ -33,7 +33,7 @@ public class UserController {
         return new ResponseEntity<>(userDtoSignUp, HttpStatus.OK);
     }
 
-    @DeleteMapping("/logout")
+    @PostMapping("/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void logoutUser(@RequestHeader(value = "User-id", required = true) String optionalHeader) {
         userService.logoutUser(optionalHeader);
