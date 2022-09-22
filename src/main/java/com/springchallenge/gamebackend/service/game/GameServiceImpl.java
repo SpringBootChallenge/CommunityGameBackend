@@ -3,7 +3,6 @@ package com.springchallenge.gamebackend.service.game;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -72,7 +71,7 @@ public class GameServiceImpl implements GameService {
         ModelMapper mapper = new ModelMapper();
         Pageable pagination = PageRequest.of(filter.getPage() - 1, filter.getLimit());
         if (sort.equals("newest")) {
-            games = gameRepo.findByFiltersOrderByUpdatedAt(filter.getPlatform(), filter.getGenre(),
+            games = gameRepo.findByFiltersOrderByReleaseDate(filter.getPlatform(), filter.getGenre(),
                     filter.getTitle(), pagination);
         } else if (sort.equals("score")) {
             games = gameRepo.findByFiltersOrderByScore(filter.getPlatform(), filter.getGenre(),
