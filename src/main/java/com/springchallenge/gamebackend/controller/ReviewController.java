@@ -55,7 +55,7 @@ public class ReviewController {
     public ResponseEntity<?>deleteReview(@RequestHeader(value = "User-id", required = true) String userIdHeader, @PathVariable String reviewId){
         if(userService.isLogged(userIdHeader)){
             reviewService.deleteReview(userIdHeader, reviewId);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         throw ExceptionsGenerator.getException(ExceptionType.UNAUTHORIZED, "You must be logged in to the server");
     }
