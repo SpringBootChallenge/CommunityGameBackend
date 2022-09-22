@@ -3,7 +3,6 @@ package com.springchallenge.gamebackend.service.game;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -67,19 +66,22 @@ public class GameServiceImpl implements GameService {
     }
 
     public List<GameDto> getFilteredGames(GameFilterCriteria filter) {
-        String sort = filter.getSort();
         List<Game> games = new ArrayList<>();
         ModelMapper mapper = new ModelMapper();
         Pageable pagination = PageRequest.of(filter.getPage() - 1, filter.getLimit());
-        if (sort.equals("newest")) {
-            games = gameRepo.findByFiltersOrderByUpdatedAt(filter.getPlatform(), filter.getGenre(),
-                    filter.getTitle(), pagination);
-        } else if (sort.equals("score")) {
-            games = gameRepo.findByFiltersOrderByScore(filter.getPlatform(), filter.getGenre(),
-                    filter.getTitle(), pagination);
-        } else if (sort.equals("players")) {
-            games = gameRepo.findByFiltersOrderByPlayers(filter.getPlatform(), filter.getGenre(),
-                    filter.getTitle(), "PLAYING", pagination);
+        switch (filter.getSort()){
+            case newest:
+                games = gameRepo.findByFiltersOrderByReleaseDate(filter.getPlatform(), filter.getGenre(),
+                        filter.getTitle(), pagination);
+                break;
+            case score:
+                games = gameRepo.findByFiltersOrderByScore(filter.getPlatform(), filter.getGenre(),
+                        filter.getTitle(), pagination);
+                break;
+            case players:
+                games = gameRepo.findByFiltersOrderByPlayers(filter.getPlatform(), filter.getGenre(),
+                        filter.getTitle(), "PLAYING", pagination);
+                break;
         }
         return games
                 .stream()
