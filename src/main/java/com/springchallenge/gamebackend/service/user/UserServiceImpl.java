@@ -1,25 +1,30 @@
 package com.springchallenge.gamebackend.service.user;
 
-import com.springchallenge.gamebackend.dto.input.user.UserDto;
-import com.springchallenge.gamebackend.dto.output.user.UserDtoSignUp;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.springchallenge.gamebackend.model.User;
+import com.springchallenge.gamebackend.dto.input.user.UserDto;
 import com.springchallenge.gamebackend.exception.ExceptionType;
 import com.springchallenge.gamebackend.repository.UserRepository;
 import com.springchallenge.gamebackend.dto.input.user.UserLoginDto;
+import com.springchallenge.gamebackend.dto.output.user.UserDtoSignUp;
 import com.springchallenge.gamebackend.exception.ExceptionsGenerator;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    private final ModelMapper modelMapper;
+
+    public UserServiceImpl (@Autowired UserRepository userRepository, @Autowired ModelMapper modelMapper) {
+        this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public UserDtoSignUp createUser(UserDto userDto) {
@@ -28,9 +33,7 @@ public class UserServiceImpl implements UserService {
         Boolean userByUsername = userRepository.findByUsername(user.getUsername()) == null;
         if (userByEmail && userByUsername) {
             userRepository.save(user);
-            ModelMapper modelMapper = new ModelMapper();
-            UserDtoSignUp userDtoSignUp = modelMapper.map(user, UserDtoSignUp.class);
-            return userDtoSignUp;
+            return modelMapper.map(user, UserDtoSignUp.class);
         }
         throw ExceptionsGenerator.getException(ExceptionType.DUPLICATE_ENTITY, "Email or username in use.");
     }
@@ -53,9 +56,7 @@ public class UserServiceImpl implements UserService {
             if (reviewPassword(userExists.getPassword(), userLoginDto.getPassword())) {
                 userExists.login();
                 userRepository.save(userExists);
-                ModelMapper modelMapper = new ModelMapper();
-                UserDtoSignUp userDtoSignUp = modelMapper.map(userExists, UserDtoSignUp.class);
-                return userDtoSignUp;
+                return modelMapper.map(userExists, UserDtoSignUp.class);
             }
             throw ExceptionsGenerator.getException(ExceptionType.INVALID_CREDENTIALS,
                     "Invalid credentials");
