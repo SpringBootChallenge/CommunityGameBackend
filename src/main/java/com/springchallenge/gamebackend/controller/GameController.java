@@ -1,33 +1,39 @@
 package com.springchallenge.gamebackend.controller;
 
-import com.springchallenge.gamebackend.dto.input.game.GameFilterCriteria;
-import com.springchallenge.gamebackend.dto.input.gamestate.GameStateDto;
-import com.springchallenge.gamebackend.dto.output.game.GameDto;
-import com.springchallenge.gamebackend.exception.ExceptionType;
-import com.springchallenge.gamebackend.exception.ExceptionsGenerator;
-import com.springchallenge.gamebackend.service.game.GameService;
-import com.springchallenge.gamebackend.service.gamestate.GameStateService;
-import com.springchallenge.gamebackend.service.user.UserService;
-import org.springdoc.api.annotations.ParameterObject;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import org.springdoc.api.annotations.ParameterObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.validation.Valid;
-import java.util.List;
+import com.springchallenge.gamebackend.service.user.UserService;
+import com.springchallenge.gamebackend.dto.output.game.GameDto;
+import com.springchallenge.gamebackend.exception.ExceptionType;
+import com.springchallenge.gamebackend.service.game.GameService;
+import com.springchallenge.gamebackend.exception.ExceptionsGenerator;
+import com.springchallenge.gamebackend.dto.input.gamestate.GameStateDto;
+import com.springchallenge.gamebackend.dto.input.game.GameFilterCriteria;
+import com.springchallenge.gamebackend.service.gamestate.GameStateService;
 
 @RestController
 @RequestMapping("/games")
 public class GameController {
 
-    @Autowired
-    private GameService gameService;
-    @Autowired
-    private GameStateService gameStateService;
-    @Autowired
-    private UserService userService;
+    private final GameService gameService;
+
+    private final UserService userService;
+
+    private final GameStateService gameStateService;
+
+    public GameController(@Autowired GameService gameService, @Autowired GameStateService gameStateService, @Autowired UserService userService) {
+        this.gameService = gameService;
+        this.userService = userService;
+        this.gameStateService = gameStateService;
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<GameDto> getGame(@PathVariable String id) {

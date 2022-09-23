@@ -1,8 +1,8 @@
 package com.springchallenge.gamebackend.service.user;
 
 import java.util.Optional;
-import com.springchallenge.gamebackend.dto.input.user.UserDto;
 import com.springchallenge.gamebackend.model.User;
+import com.springchallenge.gamebackend.dto.input.user.UserDto;
 import com.springchallenge.gamebackend.dto.input.user.UserLoginDto;
 import com.springchallenge.gamebackend.dto.output.user.UserDtoSignUp;
 

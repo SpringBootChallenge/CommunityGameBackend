@@ -1,34 +1,40 @@
 package com.springchallenge.gamebackend.service.game;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.springchallenge.gamebackend.dto.input.game.GameFilterCriteria;
 import com.springchallenge.gamebackend.model.Game;
 import com.springchallenge.gamebackend.util.CSVReader;
 import com.springchallenge.gamebackend.dto.output.game.GameDto;
 import com.springchallenge.gamebackend.exception.ExceptionType;
 import com.springchallenge.gamebackend.repository.GameRepository;
 import com.springchallenge.gamebackend.exception.ExceptionsGenerator;
+import com.springchallenge.gamebackend.dto.input.game.GameFilterCriteria;
 
 @Service
 public class GameServiceImpl implements GameService {
 
-    @Autowired
-    private CSVReader csvReader;
-    @Autowired
-    private GameRepository gameRepo;
+    private final CSVReader csvReader;
+
+    private final ModelMapper modelMapper;
+
+    private final GameRepository gameRepository;
+
+    public GameServiceImpl(@Autowired CSVReader csvReader, @Autowired GameRepository gameRepository, @Autowired ModelMapper modelMapper){
+        this.csvReader = csvReader;
+        this.modelMapper = modelMapper;
+        this.gameRepository = gameRepository;
+    }
 
     @Override
     @Transactional
@@ -40,7 +46,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public void saveGames(List<Game> games) {
         try {
-            gameRepo.saveAll(games);
+            gameRepository.saveAll(games);
         } catch (DataAccessException e) {
             throw ExceptionsGenerator.getException(ExceptionType.INVALID_OBJECT,
                     "The games could not be stored in the database.");
@@ -55,38 +61,36 @@ public class GameServiceImpl implements GameService {
         }
         throw ExceptionsGenerator.getException(ExceptionType.NOT_FOUND,
                 "There is no game with the supplied id.");
-
     }
 
     private void assignGameStatistics(GameDto game) {
-        game.setBacklogCount(gameRepo.countByState(game.getId(), "BACKLOG"));
-        game.setBeatCount(gameRepo.countByState(game.getId(), "BEAT"));
-        game.setRetiredCount(gameRepo.countByState(game.getId(), "RETIRED"));
-        game.setPlayingCount(gameRepo.countByState(game.getId(), "PLAYING"));
+        game.setBacklogCount(gameRepository.countByState(game.getId(), "BACKLOG"));
+        game.setBeatCount(gameRepository.countByState(game.getId(), "BEAT"));
+        game.setRetiredCount(gameRepository.countByState(game.getId(), "RETIRED"));
+        game.setPlayingCount(gameRepository.countByState(game.getId(), "PLAYING"));
     }
 
     public List<GameDto> getFilteredGames(GameFilterCriteria filter) {
         List<Game> games = new ArrayList<>();
-        ModelMapper mapper = new ModelMapper();
         Pageable pagination = PageRequest.of(filter.getPage() - 1, filter.getLimit());
         switch (filter.getSort()){
             case newest:
-                games = gameRepo.findByFiltersOrderByReleaseDate(filter.getPlatform(), filter.getGenre(),
+                games = gameRepository.findByFiltersOrderByReleaseDate(filter.getPlatform(), filter.getGenre(),
                         filter.getTitle(), pagination);
                 break;
             case score:
-                games = gameRepo.findByFiltersOrderByScore(filter.getPlatform(), filter.getGenre(),
+                games = gameRepository.findByFiltersOrderByScore(filter.getPlatform(), filter.getGenre(),
                         filter.getTitle(), pagination);
                 break;
             case players:
-                games = gameRepo.findByFiltersOrderByPlayers(filter.getPlatform(), filter.getGenre(),
+                games = gameRepository.findByFiltersOrderByPlayers(filter.getPlatform(), filter.getGenre(),
                         filter.getTitle(), "PLAYING", pagination);
                 break;
         }
         return games
                 .stream()
                 .map(game -> {
-                    GameDto gameDto = mapper.map(game, GameDto.class);
+                    GameDto gameDto = modelMapper.map(game, GameDto.class);
                     assignGameStatistics(gameDto);
                     return gameDto;
                 })
@@ -96,15 +100,14 @@ public class GameServiceImpl implements GameService {
     @Override
     public GameDto findGameDtoById(String id) {
         Game game = findById(id);
-        ModelMapper mapper = new ModelMapper();
-        GameDto foundGame = mapper.map(game, GameDto.class);
+        GameDto foundGame = modelMapper.map(game, GameDto.class);
         assignGameStatistics(foundGame);
         return foundGame;
     }
 
     @Override
     public Optional<Game> findPossibleGameById(String id) {
-        return gameRepo.findById(id);
+        return gameRepository.findById(id);
     }
 
 }
