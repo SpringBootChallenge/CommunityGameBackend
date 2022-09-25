@@ -17,23 +17,27 @@ import javax.validation.Valid;
 
 @RestController
 public class UserController {
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
+
+    public UserController(@Autowired UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDtoSignUp> createUser(@RequestBody @Valid UserDto userDto, BindingResult bindingResult){
+    public ResponseEntity<UserDtoSignUp> createUser(@RequestBody @Valid UserDto userDto, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) throw ExceptionsGenerator.getException(ExceptionType.INVALID_OBJECT, "Incorrectly formed request");
         UserDtoSignUp userDtoSignUp= userService.createUser(userDto);
         return new ResponseEntity<>(userDtoSignUp, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public  ResponseEntity<UserDtoSignUp> loginUser(@RequestBody UserLoginDto userLoginDto){
+    public  ResponseEntity<UserDtoSignUp> loginUser(@RequestBody UserLoginDto userLoginDto) {
         UserDtoSignUp userDtoSignUp = userService.loginUser(userLoginDto);
         return new ResponseEntity<>(userDtoSignUp, HttpStatus.OK);
     }
 
-    @DeleteMapping("/logout")
+    @PostMapping("/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void logoutUser(@RequestHeader(value = "User-id", required = true) String optionalHeader) {
         userService.logoutUser(optionalHeader);

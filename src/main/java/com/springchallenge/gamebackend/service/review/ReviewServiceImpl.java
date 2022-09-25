@@ -2,10 +2,8 @@ package com.springchallenge.gamebackend.service.review;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
-
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
@@ -27,20 +25,26 @@ import com.springchallenge.gamebackend.dto.input.review.ReviewFilterCriteria;
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private GameService gameService;
+    private final GameService gameService;
 
-    @Autowired
-    private ReviewRepository reviewRepository;
+    private final ModelMapper modelMapper;
+
+    private final ReviewRepository reviewRepository;
+
+    public ReviewServiceImpl(@Autowired ReviewRepository reviewRepository, @Autowired GameService gameService, @Autowired UserService userService, @Autowired ModelMapper modelMapper){
+        this.userService = userService;
+        this.gameService = gameService;
+        this.modelMapper = modelMapper;
+        this.reviewRepository = reviewRepository;
+    }
 
     @Override
     public Review findById(String id) {
         Optional<Review> review = reviewRepository.findById(id);
         if (review.isPresent()) {
-            return reviewRepository.findById(id).get();
+            return review.get();
         }
         throw ExceptionsGenerator.getException(ExceptionType.NOT_FOUND,
                 "There is no review with the supplied id.");
@@ -57,8 +61,7 @@ public class ReviewServiceImpl implements ReviewService {
             Game game = gameService.findById(gameId);
             Review review = new Review(reviewDto, user, game);
             reviewRepository.save(review);
-            ModelMapper mapper = new ModelMapper();
-            return mapper.map(review, ReviewDtoOutput.class);
+            return modelMapper.map(review, ReviewDtoOutput.class);
         }
         throw ExceptionsGenerator.getException(ExceptionType.DUPLICATE_ENTITY, "Review already created");
     }
@@ -69,8 +72,7 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = findById(reviewId);
         review.update(updateReviewDto);
         reviewRepository.save(review);
-        ModelMapper mapper = new ModelMapper();
-        return mapper.map(review, ReviewDtoOutput.class);
+        return modelMapper.map(review, ReviewDtoOutput.class);
     }
 
     @Override
@@ -81,13 +83,12 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public List<ReviewDtoOutput> getFilteredReviews(ReviewFilterCriteria filter) {
-        List<Review> reviews= new ArrayList<>();
-        ModelMapper mapper = new ModelMapper();
+        List<Review> reviews;
         Pageable pagination = PageRequest.of(filter.getPage() - 1, filter.getLimit());
         reviews = reviewRepository.findByFilter(filter.getGameId(), filter.getUserId(), pagination);
         return reviews.stream()
-                .map(game -> {
-                    return mapper.map(game, ReviewDtoOutput.class);
+                .map(review -> {
+                    return modelMapper.map(review, ReviewDtoOutput.class);
                 }).collect(Collectors.toList());
     }
 }

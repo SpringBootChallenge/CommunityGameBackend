@@ -20,10 +20,10 @@ public interface GameRepository extends PagingAndSortingRepository<Game, String>
 
         @Query(value = "SELECT * FROM game g "
                         + FILTER_CONDITION
-                        + " ORDER BY g.updated_at DESC", countQuery = "SELECT COUNT(g.id) FROM game g"
+                        + " ORDER BY g.release_date DESC", countQuery = "SELECT COUNT(g.id) FROM game g"
                                         + FILTER_CONDITION, nativeQuery = true)
-        List<Game> findByFiltersOrderByUpdatedAt(String platform, String genre, String title,
-                        Pageable pagination);
+        List<Game> findByFiltersOrderByReleaseDate(String platform, String genre, String title,
+                                                   Pageable pagination);
 
         @Query(value = "SELECT g.*, COUNT(CASE s.description WHEN ?4 THEN 1 ELSE NULL END) AS numPlayers FROM game g "
                         + "LEFT JOIN game_state gs ON g.id=gs.game_id "
